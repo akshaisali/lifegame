@@ -1,11 +1,14 @@
-def display_board(board):
+import random
+import time
+
+def create_grid(size, prob):
     grid = []
-    for row in board:
-        row_str = ''
-        for cell in row:
-            if cell == 1:
-                row_str += '#'
+    for i in range(size):
+        row = []
+        for j in range(size):
+            if random.uniform(0, 1) < prob:
+                row.append(1)
             else:
-                row_str += '*'
-        grid.append(row_str)
-    return '\n'.join(grid)
+                row.append(0)
+        grid.append(row)
+    return grid
