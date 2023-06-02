@@ -9,3 +9,7 @@ def test_create_grid():
     assert len(grid) == size
     for row in grid:
         assert len(row) == size
+
+def test_get_neighbor():
+    board=[[0, 1, 0], [0, 1, 0], [0, 1, 0]]
+    assert lifegame.get_neighbors(board,1,1)==2
