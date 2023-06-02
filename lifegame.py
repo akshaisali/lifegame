@@ -1,19 +1,42 @@
-import random
 import time
+def display_grid(grid) :
+    lst =[]
+    
+    for row in grid :
+            for row1 in row:
+                 if row1 == 1 :
+                      lst.append('#')
+                 elif row1 == 0 :
+                      lst.append('*')
 
-def create_grid(size, prob):
-    grid = []
-    for i in range(size):
-        row = []
-        for j in range(size):
-            if random.uniform(0, 1) < prob:
-                row.append(1)
+            lst.append('\n')   
+    lst.pop()       
+    a = ''.join(lst)
+    return a
+
+
+def next_generation(board):
+    rows = len(board)
+    cols = len(board[0])
+    updated_board = [[0] * cols for _ in range(rows)]
+
+    for row in range(rows):
+        for col in range(cols):
+            live_neighbours = count_live_dead_neighbors(board, row, col)
+
+            if board[row][col] == 1:
+                if live_neighbours < 2 or live_neighbours > 3:
+                    updated_board[row][col] = 0
+                else:
+                    updated_board[row][col] = 1
             else:
-                row.append(0)
-        grid.append(row)
-    return grid
+                if live_neighbours == 3:
+                    updated_board[row][col] = 1
 
-def get_neighbors(board, row, col):
+    return updated_board
+
+
+def count_live_dead_neighbors(board, row, col):
     rows = len(board)
     cols = len(board[0])
     live_neighbors = 0
@@ -23,23 +46,34 @@ def get_neighbors(board, row, col):
                 live_neighbors += 1
     return live_neighbors
 
-def calculate_next_state(cell, neighbors):
-    num_alive = sum(neighbors)
-    if cell == 1 and (num_alive == 2 or num_alive == 3):
-        return 0
-    elif cell == 0 and num_alive == 3:
-        return 1
-    else:
-        return 1
+
+
+
+
+def main():
+    # Initialize the starting grid
+    grid = [
+        [1, 1, 1],
+        [0, 0, 1],
+        [0, 0, 1],
+    ]
+
+
+    print(display_grid(grid))
+
     
-#def calculate_next_state(cell, neighbors):
-    #if cell == 1:
-      #  if neighbors == 2 or neighbors == 3:
-       #     return 1
-        #else:
-        #    return 0
-    #else:
-     #   if neighbors == 3:
-      #      return 1
-       # else:
-       #     return 0
+    while True:
+        
+        grid = next_generation(grid)
+
+        
+        print(display_grid(grid))
+        time.sleep(0.8)
+
+    print("Game Over")
+
+
+
+if __name__ == "__main__":
+    main()
+
